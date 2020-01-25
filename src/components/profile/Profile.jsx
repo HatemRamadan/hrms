@@ -18,18 +18,21 @@ class Profile extends React.Component {
         <Header element="profile"></Header>
         <div className="container-fluid">
           <div className="row mt-4">
-            <div className="col-5"></div>
-            <div className="col-1">
-              <Icon className="mt-3" icon="user" iconSize={70} />
+            <div className="col-4"></div>
+            <div className="col-4 text-center">
+              <Icon className="mt-3" icon="user" iconSize={120} />
             </div>
-            <div className="col-4">
+          </div>
+          <div className="row">
+            <div className="col-4"></div>
+            <div className="col-4 text-center">
               <h1>{this.props.employee.name}</h1>
               <h5 style={{ color: "#2B95D6" }}>{this.props.employee.title}</h5>
             </div>
           </div>
           <div className="row">
-            <div className="col-5"></div>
-            <div className="col-3 mt-5">
+            <div className="col-4"></div>
+            <div className="col-4 mt-5">
               <Tabs
                 id="profile"
                 onChange={this.handleTabChange}

@@ -32,7 +32,7 @@ class Info extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-fluid">
         <div className="row no-gutters">
           <div className="col-5">
             <H4>Start Date: </H4>

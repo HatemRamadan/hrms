@@ -68,7 +68,10 @@ export const fetchSalaryLogs = () => async (dispatch, getState) => {
   });
 };
 
-export const scheduleVacation = remainingVacationDays => async getState => {
+export const scheduleVacation = remainingVacationDays => async (
+  disbatch,
+  getState
+) => {
   await db
     .collection("employees")
     .doc(getState().uid)

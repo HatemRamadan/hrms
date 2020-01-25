@@ -2,9 +2,12 @@ import React from "react";
 import { Spinner } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { login, logout, fetchEmployee } from "../../actions";
+import quotes from "../../Quotes";
 import "./Login.css";
 
 class Login extends React.Component {
+  state = { quote: quotes[Math.floor(Math.random() * quotes.length)] };
+
   componentDidMount() {
     window.gapi.load("client:auth2", () =>
       window.gapi.client
@@ -78,14 +81,20 @@ class Login extends React.Component {
       <div className="container text-center">
         <div className="container col-4" style={{ paddingTop: "20%" }}>
           <div className="row mb-5">
-            <div className="col-2"></div>
+            <div className="col-1"></div>
             <div className="col-4">
-              <h1 className="bp3-heading title" style={{ fontSize: "70px" }}>
+              <h1 className="bp3-heading title" style={{ fontSize: "90px" }}>
                 HRMS
               </h1>
             </div>
           </div>
           {this.renderSpinner()}
+          <div
+            className="row mt-4 .bp3-ui-text text-center"
+            style={{ fontSize: "20px" }}
+          >
+            <q className="col">{this.state.quote}</q>
+          </div>
         </div>
       </div>
     );

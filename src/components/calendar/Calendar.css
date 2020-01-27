@@ -1,0 +1,12 @@
+.calendar {
+  border: solid 1px #777;
+  margin-top: 5px;
+  margin-left: 10px;
+  width: 97vw;
+  height: 85vh;
+}
+
+.sign-in-button {
+  margin-left: 40vw;
+  margin-top: 40vh;
+}

@@ -39,7 +39,7 @@ class Admin extends React.Component {
                   this.props.selectEmployee(employee);
                 }}
               >
-                {employee.email.split("@")[0]}
+                {employee.name}
               </span>
             );
           })}

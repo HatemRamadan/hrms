@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "nodogoro-charlie"
+  },
+  "targets": {
+    "nodogoro-charlie": {
+      "hosting": {
+        "hrms": [
+          "nodogoro-hrms"
+        ]
+      }
+    }
+  }
+}

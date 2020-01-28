@@ -1,17 +1,18 @@
 import history from "../history";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 
-export const login = (uid, email) => async dispatch => {
+export const login = (uid, email, name) => async dispatch => {
   await db
-    .collection("employees")
+    .collection("hrms-employees")
     .doc(uid)
     .get()
     .then(res => {
       if (res.exists === false)
-        db.collection("employees")
+        db.collection("hrms-employees")
           .doc(uid)
           .set({
             email,
+            name,
             isAdmin: false
           })
           .then(res => {
@@ -40,7 +41,7 @@ export const logout = () => {
 
 export const fetchEmployee = uid => async dispatch => {
   return db
-    .collection("employees")
+    .collection("hrms-employees")
     .doc(uid)
     .onSnapshot(
       res => {
@@ -55,7 +56,7 @@ export const fetchEmployee = uid => async dispatch => {
 
 export const fetchSalaryLogs = () => async (dispatch, getState) => {
   const res = await db
-    .collection("employees")
+    .collection("hrms-employees")
     .doc(getState().uid)
     .collection("salary log")
     .orderBy("timestamp", "desc")
@@ -73,13 +74,13 @@ export const scheduleVacation = remainingVacationDays => async (
   getState
 ) => {
   await db
-    .collection("employees")
+    .collection("hrms-employees")
     .doc(getState().uid)
     .update({ remainingVacationDays: remainingVacationDays });
 };
 
 export const fetchAllEmployees = () => async dispatch => {
-  return db.collection("employees").onSnapshot(res => {
+  return db.collection("hrms-employees").onSnapshot(res => {
     let employees = [];
     res.forEach(doc => {
       employees.push(doc.data());
@@ -105,7 +106,7 @@ export const deselectEmployee = () => {
 };
 
 export const editEmployee = (updatedEmployee, email) => async dispatch => {
-  db.collection("employees")
+  db.collection("hrms-employees")
     .where("email", "==", email)
     .limit(1)
     .get()
@@ -117,7 +118,7 @@ export const editEmployee = (updatedEmployee, email) => async dispatch => {
 
 export const insertSalaryLog = salaryLog => async (dispatch, getState) => {
   await db
-    .collection("employees")
+    .collection("hrms-employees")
     .where("email", "==", getState().selectedEmployee.email)
     .get()
     .then(res =>
@@ -133,6 +134,18 @@ export const insertSalaryLog = salaryLog => async (dispatch, getState) => {
   dispatch(closeModal());
 };
 
+export const uploadFile = (file, email) => {
+  var ref = storage.ref(`hrms/contracts/${email}`);
+  ref
+    .put(file)
+    .then(res => {})
+    .catch(err => console.log(err));
+};
+export const getFileURL = email => {
+  var ref = storage.ref();
+  const doc = ref.child(`hrms/contracts/${email}`);
+  return doc.getDownloadURL();
+};
 export const closeModal = () => {
   return {
     type: "CLOSE_MODAL"

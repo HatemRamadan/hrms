@@ -13,7 +13,7 @@ class Login extends React.Component {
       window.gapi.client
         .init({
           clientId:
-            "342068308292-cplrfsg7qkfk022hql2rp6ujvm2eilp4.apps.googleusercontent.com",
+            "978494847774-ipsp5454ms4qascu0848i92mj9412k8o.apps.googleusercontent.com",
           scope:
             "email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
           discoveryDocs: [
@@ -42,7 +42,11 @@ class Login extends React.Component {
           this.auth.currentUser
             .get()
             .getBasicProfile()
-            .getEmail()
+            .getEmail(),
+          this.auth.currentUser
+            .get()
+            .getBasicProfile()
+            .getName()
         );
         this.props.fetchEmployee(this.auth.currentUser.get().getId());
       } else {

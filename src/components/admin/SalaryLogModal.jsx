@@ -100,7 +100,13 @@ class SalaryLogModal extends React.Component {
                 <option value="December">December</option>
               </Field>
             </label>
-            <button type="submit">Submit</button>
+            <button
+              className="btn"
+              style={{ backgroundColor: "#53c270" }}
+              type="submit"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </Dialog>

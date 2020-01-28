@@ -5,16 +5,29 @@ import {
   Card,
   Elevation,
   Divider,
-  Colors
+  Colors,
+  Button,
+  FileInput
 } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Field, reduxForm } from "redux-form";
-import { deselectEmployee, editEmployee, openModal } from "../../actions";
+import {
+  deselectEmployee,
+  editEmployee,
+  openModal,
+  uploadFile
+} from "../../actions";
 import SalaryLogModal from "./SalaryLogModal";
 
 class EmployeeEdit extends React.Component {
+  state = { contract: null };
+  onFileUploadChange = event => {
+    this.setState({ contract: event.target.files[0] });
+  };
+  onUploadButtonClick = () => {
+    uploadFile(this.state.contract, this.props.email);
+  };
   onSubmit = formValues => {
-    console.log(formValues);
     this.props.editEmployee(formValues, this.props.email);
   };
   formatDate = date => {
@@ -44,8 +57,7 @@ class EmployeeEdit extends React.Component {
         <DateInput
           formatDate={date => this.formatDate(date)}
           parseDate={str => {
-            console.log(str.l);
-            return str || Date.now();
+            return str;
           }}
           maxDate={new Date(2025, 12, 31)}
           {...formProps.input}
@@ -61,18 +73,44 @@ class EmployeeEdit extends React.Component {
       </label>
     );
   };
+  renderUploadContract = () => {
+    return (
+      <div className="row mt-2">
+        <div className="col-3"></div>
+        <div className="col-5">
+          <FileInput
+            style={{ width: "10vw" }}
+            text="Choose a Contract..."
+            onInputChange={this.onFileUploadChange}
+          />
+        </div>
+        <div className="col-2">
+          <button
+            className="btn-sm"
+            onClick={this.onUploadButtonClick}
+            style={{ border: "1px solid gray" }}
+          >
+            Upload
+          </button>
+        </div>
+      </div>
+    );
+  };
   render() {
     return (
       <Card className="col-6" elevation={Elevation.TWO}>
         <SalaryLogModal></SalaryLogModal>
         <div className="row ml-2">
-          <div className="col-4">
-            <h5>{this.props.email.split("@")[0]}</h5>
+          <div className="col-5">
+            <h5>{this.props.name}</h5>
           </div>
           <div className="col-5">
-            <button onClick={this.props.openModal}>Insert Salary Log</button>
+            <Button icon="dollar" onClick={this.props.openModal}>
+              Insert Salary Log
+            </Button>
           </div>
         </div>
+        {this.renderUploadContract()}
         <Divider className="mt-3" />
         <h5 className="mt-3">Edit Employee</h5>
         <form
@@ -125,8 +163,9 @@ class EmployeeEdit extends React.Component {
             Submit
           </button>
           <button
-            className="btn bg-secondary ml-2"
+            className="btn ml-2"
             onClick={this.props.deselectEmployee}
+            style={{ border: "2px solid gray" }}
           >
             Cancel
           </button>
@@ -138,6 +177,7 @@ class EmployeeEdit extends React.Component {
 const mapStateToProps = state => {
   return {
     email: state.selectedEmployee.email,
+    name: state.selectedEmployee.name,
     initialValues: {
       title: state.selectedEmployee.title,
       name: state.selectedEmployee.name,
@@ -152,17 +192,6 @@ const mapStateToProps = state => {
         : new Date(2000, 1, 1)
     }
   };
-};
-const validate = formValues => {
-  let errors = {};
-
-  if (!formValues.max_number_of_users)
-    errors.max_number_of_users = "Max. number of users is required";
-  if (!formValues.order) errors.order = "Order is required";
-  if (!formValues.text) errors.text = "Text is required";
-  if (!formValues.date) errors.date = "Date is required";
-
-  return errors;
 };
 
 export default connect(mapStateToProps, {
